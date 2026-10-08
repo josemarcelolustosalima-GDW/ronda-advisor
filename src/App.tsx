@@ -36,7 +36,6 @@ import {
   saveRound,
   saveSettings,
 } from './db/indexedDb';
-import { GuidewayLogo } from './components/GuidewayLogo';
 import { OfflineIndicator, PWAInstallButton } from './components/PWAInstallPrompt';
 import { ActiveRoundView } from './components/ActiveRoundView';
 import { OpportunityForm } from './components/OpportunityForm';
@@ -384,22 +383,22 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 text-slate-900 flex flex-col">
       <OfflineIndicator />
 
       {/* Top Bar Contract: Zone 1 (Brand) — Zone 2 (Nav Links) — Zone 3 (Primary Actions) */}
-      <header className="sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 px-4 sm:px-6 py-3.5">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
-          {/* Zone 1: Brand */}
+      <header className="sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 px-3 sm:px-6 py-3">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
+          {/* Zone 1: Brand Title */}
           <a
             href="#inicio"
             onClick={(e) => {
               e.preventDefault();
               setScreen('HOME');
             }}
-            className="text-lg font-bold tracking-tight text-white whitespace-nowrap"
+            className="text-sm sm:text-base font-bold tracking-wider uppercase text-white whitespace-nowrap truncate"
           >
-            GUIDEWAY
+            RONDA INDUSTRIAL
           </a>
 
           {/* Zone 2: Clean Nav Links */}
@@ -439,11 +438,11 @@ export default function App() {
           </nav>
 
           {/* Zone 3: 1-2 Primary Actions */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 shrink-0">
             <PWAInstallButton />
             <button
               onClick={handleOpenNewRoundScreen}
-              className="min-h-[40px] px-4 py-2 text-xs font-bold text-white bg-[#5EA83A] hover:bg-[#4e8f2f] rounded-lg transition-colors whitespace-nowrap cursor-pointer"
+              className="min-h-[40px] px-3 sm:px-4 py-2 text-xs font-bold text-white bg-[#5EA83A] hover:bg-[#4e8f2f] rounded-lg transition-colors whitespace-nowrap cursor-pointer"
             >
               + NOVA RONDA
             </button>
@@ -453,8 +452,8 @@ export default function App() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="max-w-5xl w-full mx-auto px-4 mt-4">
-          <div className="rounded-xl bg-emerald-900 text-emerald-50 px-4 py-3 text-sm font-medium flex items-center gap-2.5 shadow-sm">
+        <div className="max-w-5xl w-full mx-auto px-3 sm:px-4 mt-3">
+          <div className="rounded-xl bg-emerald-900 text-emerald-50 px-4 py-3 text-xs sm:text-sm font-medium flex items-center gap-2.5 shadow-sm">
             <CheckCircle2 className="w-4 h-4 text-[#5EA83A] shrink-0" />
             <span>{toastMessage}</span>
           </div>
@@ -465,13 +464,12 @@ export default function App() {
           SECTION 5: HOME SCREEN
       ===================================================================== */}
       {screen === 'HOME' && (
-        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 space-y-6">
-          {/* Corporate Hero Card with Official GUIDEWAY Logo */}
-          <section className="rounded-2xl bg-slate-900 text-white p-6 sm:p-8 border-b-4 border-[#5EA83A] shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="space-y-3">
-                <GuidewayLogo variant="dark" size="lg" showTagline={true} />
-                <div className="pt-1">
+        <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-5 pb-24 space-y-5">
+          {/* Corporate Hero Card without Graphical Logo */}
+          <section className="rounded-2xl bg-slate-900 text-white p-5 sm:p-8 border-b-4 border-[#5EA83A] shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+              <div className="space-y-2">
+                <div>
                   <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                     Ronda Industrial
                   </h1>
@@ -481,8 +479,8 @@ export default function App() {
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
                   Ferramenta corporativa de observação técnica, documentação
-                  fotográfica em campo e emissão de diagnóstico operacional. O
-                  julgamento profissional do Advisor é a inteligência central.
+                  fotográfica em campo e emissão de diagnóstico operacional em
+                  página única.
                 </p>
               </div>
 
@@ -490,26 +488,26 @@ export default function App() {
               <div className="flex flex-col gap-2.5 sm:min-w-[240px]">
                 <button
                   onClick={handleOpenNewRoundScreen}
-                  className="min-h-[52px] px-6 py-3 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap"
+                  className="min-h-[50px] px-5 py-3 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
                 >
-                  <Plus className="w-5 h-5" />
-                  <span>+ NOVA RONDA</span>
+                  <Plus className="w-5 h-5 shrink-0" />
+                  <span className="truncate">NOVA RONDA</span>
                 </button>
 
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setScreen('HISTORY')}
-                    className="min-h-[46px] px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                    className="min-h-[44px] px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-w-0"
                   >
-                    <History className="w-4 h-4 text-slate-300" />
-                    <span>HISTÓRICO</span>
+                    <History className="w-4 h-4 text-slate-300 shrink-0" />
+                    <span className="truncate">HISTÓRICO</span>
                   </button>
                   <button
                     onClick={() => setScreen('SETTINGS')}
-                    className="min-h-[46px] px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                    className="min-h-[44px] px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-w-0"
                   >
-                    <Settings className="w-4 h-4 text-slate-300" />
-                    <span>CONFIGURAÇÕES</span>
+                    <Settings className="w-4 h-4 text-slate-300 shrink-0" />
+                    <span className="truncate">AJUSTES</span>
                   </button>
                 </div>
               </div>

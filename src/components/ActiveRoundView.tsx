@@ -32,7 +32,6 @@ import {
   OperationalArea,
   Round,
 } from '../types/round';
-import { GuidewayLogo } from './GuidewayLogo';
 import { computeRoundStatistics } from '../utils/pdfGenerator';
 
 interface ActiveRoundViewProps {
@@ -106,7 +105,6 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
     return true;
   });
 
-  // Compute live duration preview for End Round Summary
   const computeLiveDuration = () => {
     const diffMs = Math.max(Date.now() - round.startTimestamp, 60000);
     const totalMins = Math.floor(diffMs / 60000);
@@ -116,130 +114,135 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-32">
-      {/* Top Corporate Bar */}
-      <header className="sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 px-4 py-3">
-        <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 pb-28">
+      {/* Top Corporate Bar — No Graphical Logo */}
+      <header className="sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 px-3 sm:px-4 py-3">
+        <div className="max-w-5xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 min-w-0">
             <button
               onClick={onBackToHome}
-              className="min-h-[44px] min-w-[44px] rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition-colors cursor-pointer"
+              className="min-h-[42px] min-w-[42px] rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition-colors cursor-pointer shrink-0"
               aria-label="Voltar ao Início"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <GuidewayLogo variant="dark" size="sm" showTagline={false} />
+            <div className="min-w-0">
+              <span className="block text-sm font-bold tracking-wider uppercase text-white truncate">
+                RONDA INDUSTRIAL
+              </span>
+              <span className="block text-[11px] font-mono text-[#5EA83A] font-semibold truncate">
+                {round.id}
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-block text-xs font-mono text-[#5EA83A] font-semibold">
-              {round.id}
-            </span>
-            <button
-              onClick={() => setShowEndRoundModal(true)}
-              className="min-h-[42px] px-3.5 rounded-xl bg-slate-800 hover:bg-red-950/80 border border-slate-700 hover:border-red-500/40 text-xs font-bold text-slate-100 transition-colors cursor-pointer whitespace-nowrap"
-            >
-              ENCERRAR RONDA
-            </button>
-          </div>
+          <button
+            onClick={() => setShowEndRoundModal(true)}
+            className="min-h-[42px] px-3 sm:px-3.5 rounded-xl bg-slate-800 hover:bg-red-950/80 border border-slate-700 hover:border-red-500/40 text-xs font-bold text-slate-100 transition-colors cursor-pointer shrink-0"
+          >
+            ENCERRAR RONDA
+          </button>
         </div>
       </header>
 
       {/* Confirmation Toast */}
       {toastMessage && (
-        <div className="max-w-5xl mx-auto px-4 mt-4">
-          <div className="rounded-xl bg-emerald-900 text-emerald-50 px-4 py-3 text-sm font-semibold flex items-center gap-2.5 shadow-sm">
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 mt-3">
+          <div className="rounded-xl bg-emerald-900 text-emerald-50 px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-2.5 shadow-sm">
             <CheckCircle2 className="w-4 h-4 text-[#5EA83A] shrink-0" />
             <span>{toastMessage}</span>
           </div>
         </div>
       )}
 
-      <main className="max-w-5xl mx-auto px-4 pt-5 space-y-5">
-        {/* Active Round Status Card */}
-        <section className="bg-slate-900 text-white rounded-2xl p-5 sm:p-6 border-l-4 border-[#5EA83A] shadow-xs">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+      <main className="max-w-5xl mx-auto px-3 sm:px-4 pt-4 space-y-4">
+        {/* Active Round Status Card — Enquadrado 100% na tela mobile */}
+        <section className="bg-slate-900 text-white rounded-2xl p-4 sm:p-6 border-l-4 border-[#5EA83A] shadow-xs overflow-hidden">
+          <div className="space-y-3">
             <div>
               <div className="flex items-center gap-2 text-xs font-mono text-[#5EA83A] font-semibold">
-                <span className="w-2 h-2 rounded-full bg-[#5EA83A] animate-pulse" />
-                <span>RONDA EM ANDAMENTO · {round.id}</span>
+                <span className="w-2 h-2 rounded-full bg-[#5EA83A] animate-pulse shrink-0" />
+                <span className="truncate">RONDA EM ANDAMENTO · {round.id}</span>
               </div>
-              <h1 className="text-lg sm:text-xl font-bold text-white mt-1">
+              <h1 className="text-lg sm:text-xl font-bold text-white mt-1 break-words">
                 Empresa: {round.clientCompany}
               </h1>
-              <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-300 mt-0.5 break-words">
                 Unidade: <strong className="text-white">{round.plantUnit}</strong>{' '}
-                <span className="mx-1.5 text-slate-600">·</span> Início:{' '}
+                <span className="mx-1 text-slate-600">·</span> Início:{' '}
                 <span className="font-mono tabular-nums">
                   {round.date} — {round.startTime}
                 </span>
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Strictly Contained 2-Column Action Grid inside Card */}
+            <div className="grid grid-cols-2 gap-2.5 pt-1">
               <button
+                type="button"
                 onClick={() => onStartNewOpportunity(selectedArea, true)}
-                className="min-h-[44px] px-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                className="min-h-[46px] px-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer min-w-0"
               >
-                <Zap className="w-4 h-4" />
-                <span>CAPTURA RÁPIDA</span>
+                <Zap className="w-4 h-4 shrink-0" />
+                <span className="truncate">CAPTURA RÁPIDA</span>
               </button>
               <button
+                type="button"
                 onClick={() => onStartNewOpportunity(selectedArea, false)}
-                className="min-h-[44px] px-4 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shadow-xs"
+                className="min-h-[46px] px-2.5 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs min-w-0"
               >
-                <Plus className="w-4 h-4" />
-                <span>+ NOVA OPORTUNIDADE</span>
+                <Plus className="w-4 h-4 shrink-0" />
+                <span className="truncate">NOVA OPORTUNIDADE</span>
               </button>
             </div>
           </div>
 
           {/* Live Statistics Strip */}
-          <div className="mt-5 pt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-6 gap-2.5 text-xs">
+          <div className="mt-4 pt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs">
             <div className="bg-slate-800/90 rounded-xl px-3 py-2.5">
               <span className="text-slate-400 block">Total</span>
-              <span className="text-base font-bold font-mono tabular-nums text-white">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-white">
                 {stats.total} {stats.total === 1 ? 'registro' : 'registros'}
               </span>
             </div>
             <div className="bg-slate-800/70 rounded-xl px-3 py-2.5">
               <span className="text-slate-300 block">🔴 Críticos</span>
-              <span className="text-base font-bold font-mono tabular-nums text-red-400">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-red-400">
                 {stats.byCriticality[CriticalityLevel.CRITICA]}
               </span>
             </div>
             <div className="bg-slate-800/70 rounded-xl px-3 py-2.5">
               <span className="text-slate-300 block">🟠 Altos</span>
-              <span className="text-base font-bold font-mono tabular-nums text-orange-400">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-orange-400">
                 {stats.byCriticality[CriticalityLevel.ALTA]}
               </span>
             </div>
             <div className="bg-slate-800/70 rounded-xl px-3 py-2.5">
               <span className="text-slate-300 block">🟡 Médios</span>
-              <span className="text-base font-bold font-mono tabular-nums text-amber-300">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-amber-300">
                 {stats.byCriticality[CriticalityLevel.MEDIA]}
               </span>
             </div>
             <div className="bg-slate-800/70 rounded-xl px-3 py-2.5">
               <span className="text-slate-300 block">🟢 Baixos</span>
-              <span className="text-base font-bold font-mono tabular-nums text-emerald-400">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-emerald-400">
                 {stats.byCriticality[CriticalityLevel.BAIXA]}
               </span>
             </div>
             <div className="bg-slate-800/70 rounded-xl px-3 py-2.5">
               <span className="text-slate-300 block">Pendentes</span>
-              <span className="text-base font-bold font-mono tabular-nums text-amber-400">
+              <span className="text-sm sm:text-base font-bold font-mono tabular-nums text-amber-400">
                 {pendingCount}
               </span>
             </div>
           </div>
         </section>
 
-        {/* Segmented View Selector: ÁREAS OPERACIONAIS vs REGISTROS DA RONDA */}
-        <div className="flex items-center gap-1.5 p-1.5 bg-slate-200/80 rounded-xl">
+        {/* Segmented View Selector */}
+        <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-slate-200/80 rounded-xl">
           <button
             onClick={() => setActiveTab('AREAS')}
-            className={`flex-1 min-h-[44px] rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`min-h-[42px] px-2 rounded-lg text-xs font-bold transition-all cursor-pointer truncate ${
               activeTab === 'AREAS'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
@@ -249,26 +252,23 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('REGISTROS')}
-            className={`flex-1 min-h-[44px] rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`min-h-[42px] px-2 rounded-lg text-xs font-bold transition-all cursor-pointer truncate ${
               activeTab === 'REGISTROS'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            OPORTUNIDADES REGISTRADAS ({round.findings.length})
+            REGISTROS ({round.findings.length})
           </button>
         </div>
 
-        {/* TAB 1: SECTION 7 — OPERATIONAL AREAS (Large Touch-Friendly Cards) */}
+        {/* TAB 1: SECTION 7 — OPERATIONAL AREAS */}
         {activeTab === 'AREAS' && (
           <section className="space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-slate-800">
+              <h2 className="text-xs sm:text-sm font-bold text-slate-800">
                 Selecione a Área Operacional para registrar uma oportunidade
               </h2>
-              <span className="text-xs text-slate-500 hidden sm:inline">
-                Toque no card para registrar diretamente na área
-              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -305,7 +305,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
                         <div
                           className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                             isCurrent
@@ -315,8 +315,8 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                         >
                           <AreaIcon iconName={item.iconName} className="w-5 h-5" />
                         </div>
-                        <div>
-                          <h3 className="text-sm font-bold text-slate-900">
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-bold text-slate-900 truncate">
                             {item.label}
                           </h3>
                           <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
@@ -371,15 +371,15 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
         {/* TAB 2: SECTION 10 — FINDINGS CARDS IN ACTIVE ROUND */}
         {(activeTab === 'REGISTROS' || round.findings.length > 0) && (
           <section className="space-y-4 pt-2">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-base font-bold text-slate-900">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">
                 Registros da Ronda ({filteredFindings.length})
               </h2>
 
-              <div className="flex items-center gap-1 p-1 bg-slate-200/80 rounded-xl">
+              <div className="flex items-center gap-1 p-1 bg-slate-200/80 rounded-xl max-w-full overflow-x-auto">
                 <button
                   onClick={() => setFilterMode('ALL')}
-                  className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  className={`min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
                     filterMode === 'ALL'
                       ? 'bg-white text-slate-900 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
@@ -389,7 +389,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                 </button>
                 <button
                   onClick={() => setFilterMode('CRITICA')}
-                  className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  className={`min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
                     filterMode === 'CRITICA'
                       ? 'bg-white text-red-700 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
@@ -399,13 +399,13 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                 </button>
                 <button
                   onClick={() => setFilterMode('PENDING')}
-                  className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  className={`min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
                     filterMode === 'PENDING'
                       ? 'bg-white text-amber-800 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  Completar Depois ({pendingCount})
+                  Pendentes ({pendingCount})
                 </button>
               </div>
             </div>
@@ -416,7 +416,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                   Nenhuma oportunidade encontrada para este filtro.
                 </p>
                 <p className="text-xs text-slate-500">
-                  Selecione uma Área Operacional acima ou toque em &ldquo;+ NOVA
+                  Selecione uma Área Operacional acima ou toque em &ldquo;NOVA
                   OPORTUNIDADE&rdquo; para iniciar o registro.
                 </p>
               </div>
@@ -433,7 +433,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                   return (
                     <div
                       key={finding.id}
-                      className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-all"
+                      className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs hover:border-slate-300 transition-all"
                     >
                       <div className="flex flex-col sm:flex-row gap-4">
                         {/* Thumbnail */}
@@ -467,7 +467,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                         {/* Content */}
                         <div className="flex-1 min-w-0 space-y-2">
                           <div className="flex flex-wrap items-center justify-between gap-2">
-                            <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
                               <span className="font-mono font-bold text-slate-900">
                                 #{seq}
                               </span>
@@ -487,7 +487,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                               {finding.isPendingCompletion && (
                                 <span className="text-xs font-semibold text-amber-700 flex items-center gap-1">
                                   <Clock className="w-3.5 h-3.5" />
-                                  <span>Completar depois</span>
+                                  <span>Pendente</span>
                                 </span>
                               )}
                               <span
@@ -503,22 +503,26 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                               'Registro fotográfico rápido sem descrição textual.'}
                           </p>
 
-                          {finding.advisorAnalysis && (
-                            <p className="text-xs text-slate-600 line-clamp-1">
-                              <strong className="text-[#3d7223]">
-                                Visão do Advisor:
-                              </strong>{' '}
-                              {finding.advisorAnalysis}
+                          {(finding.responsible || finding.deadline) && (
+                            <p className="text-xs text-slate-500">
+                              <span>
+                                <strong>Responsável:</strong>{' '}
+                                {finding.responsible || 'A definir'}
+                              </span>
+                              <span className="mx-1.5">·</span>
+                              <span>
+                                <strong>Prazo:</strong> {finding.deadline}
+                              </span>
                             </p>
                           )}
 
-                          {/* Action Buttons: Abrir, Editar, Duplicar, Excluir */}
+                          {/* Action Buttons */}
                           <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100">
                             <div className="flex items-center gap-1.5">
                               <button
                                 type="button"
                                 onClick={() => setInspectingFinding(finding)}
-                                className="min-h-[38px] px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                className="min-h-[36px] px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               >
                                 <Eye className="w-3.5 h-3.5" />
                                 <span>Abrir</span>
@@ -526,7 +530,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onEditOpportunity(finding)}
-                                className="min-h-[38px] px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                className="min-h-[36px] px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               >
                                 <Edit3 className="w-3.5 h-3.5" />
                                 <span>Editar</span>
@@ -534,7 +538,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onDuplicateOpportunity(finding)}
-                                className="min-h-[38px] px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                className="min-h-[36px] px-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               >
                                 <Copy className="w-3.5 h-3.5" />
                                 <span>Duplicar</span>
@@ -549,14 +553,14 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                                     onDeleteOpportunity(finding.id);
                                     setConfirmDeleteId(null);
                                   }}
-                                  className="min-h-[38px] px-3 rounded-lg bg-red-600 text-white text-xs font-bold cursor-pointer"
+                                  className="min-h-[36px] px-2.5 rounded-lg bg-red-600 text-white text-xs font-bold cursor-pointer"
                                 >
-                                  Confirmar Exclusão
+                                  Confirmar
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => setConfirmDeleteId(null)}
-                                  className="min-h-[38px] px-2.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium cursor-pointer"
+                                  className="min-h-[36px] px-2 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium cursor-pointer"
                                 >
                                   Cancelar
                                 </button>
@@ -565,7 +569,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => setConfirmDeleteId(finding.id)}
-                                className="min-h-[38px] px-2.5 rounded-lg text-red-600 hover:bg-red-50 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                                className="min-h-[36px] px-2 rounded-lg text-red-600 hover:bg-red-50 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                                 <span>Excluir</span>
@@ -583,35 +587,34 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
         )}
       </main>
 
-      {/* Sticky Bottom Ergonomic Thumb Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3">
-        <div className="max-w-5xl mx-auto flex items-center gap-2.5">
+      {/* Sticky Bottom Ergonomic Thumb Bar — Strictly Framed on All Mobile Viewports */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5">
+        <div className="max-w-5xl mx-auto grid grid-cols-12 gap-2">
           <button
             type="button"
             onClick={() => onStartNewOpportunity(selectedArea, true)}
-            className="min-h-[50px] px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+            className="col-span-4 min-h-[48px] px-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer min-w-0"
           >
-            <Camera className="w-4 h-4" />
-            <span>CAPTURA RÁPIDA</span>
+            <Camera className="w-4 h-4 shrink-0" />
+            <span className="truncate">RÁPIDA</span>
           </button>
 
           <button
             type="button"
             onClick={() => onStartNewOpportunity(selectedArea, false)}
-            className="flex-1 min-h-[50px] rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer whitespace-nowrap"
+            className="col-span-5 min-h-[48px] px-2 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-xs transition-colors cursor-pointer min-w-0"
           >
-            <Plus className="w-5 h-5" />
-            <span>+ NOVA OPORTUNIDADE</span>
+            <Plus className="w-4 h-4 shrink-0" />
+            <span className="truncate">OPORTUNIDADE</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowEndRoundModal(true)}
-            className="min-h-[50px] px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+            className="col-span-3 min-h-[48px] px-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer min-w-0"
           >
-            <FileText className="w-4 h-4 text-[#5EA83A]" />
-            <span className="hidden sm:inline">ENCERRAR RONDA</span>
-            <span className="sm:hidden">ENCERRAR</span>
+            <FileText className="w-3.5 h-3.5 text-[#5EA83A] shrink-0" />
+            <span className="truncate">ENCERRAR</span>
           </button>
         </div>
       </div>
@@ -619,7 +622,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
       {/* Modal: Inspect Finding Detail */}
       {inspectingFinding && (
         <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-xl border border-slate-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <span className="text-xs font-mono font-bold text-[#5EA83A]">
@@ -640,28 +643,16 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
             <div className="space-y-3 text-sm">
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <p className="text-xs font-bold text-slate-600">
-                  O QUE FOI OBSERVADO
+                  OBSERVAÇÃO CONSTATADA
                 </p>
                 <p className="text-slate-900 mt-1 whitespace-pre-line">
                   {inspectingFinding.observation || 'Não informado.'}
                 </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200">
-                <p className="text-xs font-bold text-[#3d7223]">
-                  VISÃO / ANÁLISE DO ADVISOR
-                </p>
-                <p className="text-slate-900 mt-1 whitespace-pre-line">
-                  {inspectingFinding.advisorAnalysis || 'Pendente de complemento.'}
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-white border border-slate-200">
-                <p className="text-xs font-bold text-slate-700">RECOMENDAÇÃO</p>
-                <p className="text-slate-900 mt-1 whitespace-pre-line">
-                  {inspectingFinding.recommendation || 'Pendente de complemento.'}
-                </p>
-                <div className="mt-2 pt-2 border-t border-slate-100 flex flex-wrap gap-4 text-xs text-slate-600">
+                <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex flex-wrap gap-4 text-xs text-slate-600">
+                  <span>
+                    <strong>Criticidade:</strong>{' '}
+                    {CRITICALITY_CONFIG[inspectingFinding.criticality].label}
+                  </span>
                   <span>
                     <strong>Responsável:</strong>{' '}
                     {inspectingFinding.responsible || 'A definir'}
@@ -673,7 +664,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
               </div>
 
               {inspectingFinding.photos.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   {inspectingFinding.photos.map((p, i) => (
                     <div
                       key={p.id}
@@ -711,7 +702,7 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
       {/* SECTION 11: ENDING THE ROUND — RESUMO DA RONDA MODAL */}
       {showEndRoundModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-xl border border-slate-200">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-5 shadow-xl border border-slate-200">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div>
                 <p className="text-xs font-mono font-bold text-[#5EA83A]">
@@ -782,23 +773,15 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                   </div>
                 </div>
               </div>
-
-              {pendingCount > 0 && (
-                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950">
-                  Atenção: Existem <strong>{pendingCount}</strong> oportunidade(s)
-                  marcadas como &ldquo;Completar depois&rdquo;. Você ainda poderá
-                  editar ou reabrir a ronda a qualquer momento.
-                </div>
-              )}
             </div>
 
-            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+            <div className="pt-2 grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 onClick={() => setShowEndRoundModal(false)}
-                className="min-h-[48px] px-4 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm cursor-pointer"
+                className="min-h-[48px] px-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm cursor-pointer"
               >
-                Continuar na Ronda
+                Continuar Ronda
               </button>
               <button
                 type="button"
@@ -806,10 +789,10 @@ export const ActiveRoundView: React.FC<ActiveRoundViewProps> = ({
                   setShowEndRoundModal(false);
                   onFinishRound();
                 }}
-                className="flex-1 min-h-[48px] rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                className="min-h-[48px] px-3 rounded-xl bg-[#5EA83A] hover:bg-[#4e8f2f] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
               >
-                <FileText className="w-4 h-4" />
-                <span>GERAR RELATÓRIO</span>
+                <FileText className="w-4 h-4 shrink-0" />
+                <span className="truncate">GERAR RELATÓRIO</span>
               </button>
             </div>
           </div>

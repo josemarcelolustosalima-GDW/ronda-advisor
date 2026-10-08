@@ -1,10 +1,6 @@
 {
   "name": "GUIDEWAY Industrial Round",
   "description": "Aplicativo corporativo PWA de Ronda Operacional Industrial para Advisors GUIDEWAY com registro fotográfico, análise técnica e geração de relatório executivo em PDF.",
-  "requestFramePermissions": [
-    "camera"
-  ],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
