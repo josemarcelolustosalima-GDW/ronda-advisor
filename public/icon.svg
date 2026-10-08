@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#0F172A"/>
+  <!-- Guideway Rail + G Emblem -->
+  <g transform="translate(56, 155)">
+    <!-- "gu" in Guideway Green -->
+    <text x="0" y="110" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="112" font-weight="500" fill="#5EA83A" letter-spacing="-2">gu</text>
+    <!-- Rail profile "i" -->
+    <g transform="translate(132, 16)">
+      <!-- Rail head -->
+      <rect x="8" y="0" width="24" height="12" rx="4" fill="#F1F5F9"/>
+      <!-- Rail web -->
+      <path d="M16 12 L24 12 L23 82 L17 82 Z" fill="#E2E8F0"/>
+      <!-- Rail foot/base -->
+      <path d="M0 90 L16 80 L24 80 L40 90 L40 94 L0 94 Z" fill="#F1F5F9"/>
+    </g>
+    <!-- "dewa" in Guideway Green -->
+    <text x="176" y="110" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="112" font-weight="500" fill="#5EA83A" letter-spacing="-2">dewa</text>
+    <!-- "y" in White -->
+    <text x="448" y="110" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="112" font-weight="500" fill="#FFFFFF">y</text>
+    <!-- Bird silhouette perched above y -->
+    <path d="M442 18 C450 8, 464 6, 474 12 C478 8, 484 8, 488 11 L495 10 L489 15 C488 22, 481 28, 470 30 L464 42 L460 42 L463 31 C452 31, 442 26, 430 24 Z" fill="#FFFFFF"/>
+    <!-- Subtitle OPERAÇÕES INTELIGENTES -->
+    <text x="155" y="152" font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="20" font-weight="600" fill="#F8FAFC" letter-spacing="3.5">OPERAÇÕES INTELIGENTES</text>
+    <!-- Green underlines under O and IN -->
+    <rect x="155" y="160" width="20" height="4" fill="#5EA83A"/>
+    <rect x="308" y="160" width="28" height="4" fill="#5EA83A"/>
+  </g>
+</svg>
