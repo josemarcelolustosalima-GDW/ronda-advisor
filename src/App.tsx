@@ -1228,6 +1228,27 @@ export default function App() {
                   className="hidden"
                 />
               </label>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    if ('caches' in window) {
+                      const keys = await caches.keys();
+                      await Promise.all(keys.map((k) => caches.delete(k)));
+                    }
+                    if ('serviceWorker' in navigator) {
+                      const regs = await navigator.serviceWorker.getRegistrations();
+                      await Promise.all(regs.map((r) => r.unregister()));
+                    }
+                  } finally {
+                    window.location.reload();
+                  }
+                }}
+                className="min-h-[44px] px-4 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 text-xs font-bold flex items-center gap-2 cursor-pointer"
+              >
+                <span>Forçar Atualização do App (Limpar Cache PWA)</span>
+              </button>
             </div>
           </section>
         </main>
